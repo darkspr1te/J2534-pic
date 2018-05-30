@@ -4,10 +4,10 @@
 #include <plib.h>
 #include <stdlib.h>
 #include <usart.h>
-#include "ECAN.h"
+#include "can.h"
 #include "pic-config.h"
-
-
+#include "pins.h"
+#include <stdio.h>
 
 
 //notes
@@ -15,19 +15,8 @@
 //http://www.nicksoft.info/el/calc/?ac=spbrg&submitted=1&mcu=+Generic+16bit+BRG&Fosc=32&FoscMul=1000000&FoscAutoSelector=0&MaxBaudRateError=1
 //https://www.medo64.com/2014/05/canbus-setup/
 
-// CONFIG1L
-// #pragma config statements should precede project file includes.
-// Use project enums instead of #define for ON and OFF.
 
 
-#define OBDTX_LED        PORTBbits.RB7
-#define OBDRX_LED        PORTBbits.RB6
-#define RSTX_LED         PORTBbits.RB5
-#define RSRX_LED         PORTBbits.RB4
-#define CANRX            PORTBbits.RB3
-#define CANTX            PORTBbits.RB2
-#define ISOL             PORTBbits.RB1
-#define ISOK             PORTBbits.RB0
 #define FCY 8000000
 #define UART_BITRATE     38400
 #define UART_BITRATE_ALT 115200
@@ -41,6 +30,12 @@ CanMsg Message_Can;
 unsigned char Txdata[] = "\r\nCan Testing";
 unsigned int heartbeatCount;
 
+
+
+unsigned int ADCValue = 0;
+unsigned char ADCStringVal[4];
+unsigned char ADCStringValTwo[4];
+unsigned char stringval[10];
 
 
 void CanTestMessage(void)
@@ -198,23 +193,81 @@ void UART1Init(long baud_rate){
     SPBRG1 = (_XTAL_PLL/baud_rate/4)-1;	// set baud rate generator
     return;
 }
-
+void putch(char data) {    
+     while (!TXIF)    
+         continue;    
+     TXREG = data;    
+ }  
 void print_pic_settings(void)
 {
     //unsigned int CURR_VAL=0;
     char buff [33];
-    puts1USART("\n\r\nBRGCON1 is 0x");
+    printf("\n\r\nBRGCON1 is 0x");
     //CURR_VAL=BRGCON1;
     itoa (buff,BRGCON1,16);
-    puts1USART(buff);
-    puts1USART("\n\rBRGCON2 is 0x");
+    printf(buff);
+    printf("\n\rBRGCON2 is 0x");
     itoa (buff,BRGCON2,16);
-    puts1USART(buff);
-    puts1USART("\n\rBRGCON3 is 0x");
+    printf(buff);
+    printf("\n\rBRGCON3 is 0x");
     itoa (buff,BRGCON3,16);
-    puts1USART(buff);
-    puts1USART("\n\r");
+    printf(buff);
+    printf("\n\r");
 }
+
+
+unsigned int ADCRead(unsigned char ch)
+{
+   if(ch>13) return 0;  //Invalid Channel
+ //  ADCON0=0x00;
+   ADCON0=(ch<<2);   //Select ADC Channel
+    ADCON0bits.ADON=1;//switch on the adc module
+    __delay_us(15);
+    ADCON0bits.GODONE=1;  //Start conversion
+    while(ADCON0bits.GODONE); //wait for the conversion to finish
+    ADCON0bits.ADON=0;//switch off adc
+ 
+
+   return ADRES;
+   //return (ADRESH << 8) | ADRESL;
+}
+
+
+
+void config_adc(void)
+{
+    ANCON0bits.ANSEL0 = 1; // analog input A0 on
+    TRISAbits.TRISA0 = 1;//pin A0 input analog
+    PORTAbits.RA0 = 0;
+
+    ADCON1bits.TRIGSEL =0b00; // trigger select
+    ADCON1bits.VCFG = 0b11;        // 11 on board V4.1, b10 onboard V2.0, 0b01 External vref ,00 AVDD 
+    ADCON1bits.VNCFG =0b0; //1 external vss vref-
+    ADCON1bits.CHSN =0b000; //analouge chanel select vref- 
+
+
+    ADCON2bits.ADFM = 0b1;        // 0b1  10 bit ADC result is right justified, 00 left
+    ADCON2bits.ACQT = 0b001; //Time select bits Tad
+    ADCON2bits.ADCS = 0b100; //clock select bits 
+
+  
+    ADCON0bits.ADON = 1;        // ADC is enabled
+   
+}
+void do_voltage(void)
+{
+    char buffer [33];
+    float volts;
+       ADCValue=ADCRead(0);     
+  //   volts = 7 * ((float)ADCValue)/1024.0; //VCFG = 0b01 VNCFG=0b1
+      volts = 5.7 * ((float)ADCValue)/1024.0; //VCFG = 0b11 VNCFG=0b1
+      printf("\n\rVoltage V%6.2f\r\n", volts);
+   
+
+ 
+}
+
+
 
 void main(void) {
 unsigned char config=0,spbrg=0,baudconfig=0,i=0;
@@ -222,23 +275,23 @@ unsigned char config=0,spbrg=0,baudconfig=0,i=0;
 char buffer [33];
 unsigned int onetwo=0;
 char key_button =0;
-config_me();
+char error=0;
+config_me();//config cpu in general
+__delay_ms(10000);//delay too reduce random chars to the FTDI UART
+config_adc();//setup adc 0 for PIN 16 (12V+) reading
+CanInit();// setup can no filters
 
 
-CanInit();
+UART1Init(115200);//setup and init uart1 
+error=set_can_speed(CAN_SPEED_500);//set can speed
 
 
-UART1Init(115200);
+printf("\n\rPress Any Key");
+while (key_button ==0)key_button= Read1USART();//wait for any data from uart
 
-itoa(buffer,set_can_speed(CAN_SPEED_500),10);
-puts1USART("speed is index ");
-puts1USART(buffer);
-print_pic_settings();
-puts1USART("\n\rPress Any Key");
-//__delay_ms(10000);
-//__delay_ms(10000);
-while (key_button ==0)key_button= Read1USART();
-//gets1USART(key_button,1);
+
+//fake can message for testing
+        
 Message_Can.ID=0x7f8;
 Message_Can.DLC=8;
 Message_Can.Data[0]=1;
@@ -249,10 +302,10 @@ __delay_ms(10000);
     while (1) {
       while (PIR1bits.TX1IF == 0);
      //TXREG = 76;
-      puts1USART((char *)Txdata);
+      printf((char *)Txdata);//just before we send can, if stuck we wont see voltage
       ECAN_Transmit(Message_Can);
-      Heartbeat();
-      //printf("test %d\n",buffer);
+      Heartbeat();//so we know we not stuck
+      do_voltage();
      __delay_ms(1000);
      //TXREG = 65;
     }

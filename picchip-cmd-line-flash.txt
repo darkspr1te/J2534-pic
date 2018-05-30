@@ -1,0 +1,168 @@
+java -jar /opt/microchip/mplabx/v3.65/mplab_ipe/ipecmd.jar  -tppk3 -P18f25k80 -M -Fbuild/app.hex -ol
+
+
+
+IPECMD COMMAND LINE HELP
+Options              Description                              Default
+------------------------------------------------------------------------------------------------------
+#                    Communication Ports 1 thru 255 supported.
+                     Com Port 5 indicates USB.
+                     Other Com ports indicates RS232
+A                    VDDAPP(Applicable only for PM3)                         Device Specific
+B<Operation><path>   Environment Operation                                   None
+                     Operation L: = Load Environment,
+                     All paths = full file
+                     path. All paths located
+                     on the PM3Card must be
+                     preceeded by a 'P' All
+                     Paths on the computer
+                     must be preceeded by a
+                      'C'
+                     Operation S: = Save Environment,
+                     All paths = full environment
+                     path. All paths located
+                     on the PM3Card must be
+                     preceeded by a 'P' All
+                     Paths on the computer
+                     must be preceeded by a
+                     'C'
+                     Operation D: = Delete Environment,
+                     All paths = full file
+                     path. All paths located
+                     on the PM3Card must be
+                     preceeded by a 'P' All
+                     Paths on the computer
+                     must be preceeded by a
+                     'C'
+                     Operation C: = Copy Environment,
+                     path = full file path to
+                     the environment file of
+                     the environemnt to be copied,
+                     followed by the path to
+                     the destination directory.
+                     The two paths must be
+                     separated by an asterisk
+                     (*), and each path must
+                     be preceded by either 'C'
+                     if the path is on the
+                     computer or 'P' if the
+                     path is on the PM3.
+                     Operation V: = View Environment,
+                     path = full file path to
+                     the environment file of
+                     the environemnt to be viewed.
+                     All paths located
+                     on the PM3Card must be
+                     preceeded by a 'P' All
+                     Paths on the computer
+                     must be preceeded by a
+                     'C'
+C                    Blank Check Device                                       Do not Blank Check
+D<file>              OSSuite File Selection                                   None
+E                    Erase Flash Device                                       Do Not Erase
+F<file>              Hex File Selection                                       None
+G<Type><range/path>  Read functions                                           None
+                     Type F: = read into hex file, 
+                     path = full file path,
+                     range is not used
+                     Types P,E,I,C,B,A: = ouput read of Program,
+                     EEPROM, ID ,Configuration
+                     Boot and Auxiliary
+                     Memory to the screen. P and E 
+                     must be followed by an address 
+                     range in the form of x-y where
+                     x is the start address and y is
+                     the end address both in hex,
+                     path is not used
+I                    Display Device ID                                         Do Not Display
+J                    High voltage MCLR(Not Selected)                           Selected
+K                    Display Hex File Checksum                                 Do Not Display
+L                    Low voltage programming(For devices that support PGM pin) Not Selected
+M<memory region>     Program Device                                            Do Not Program
+                     memory regions:
+                       P = Program memory
+                       E = EEPROM
+                       I = ID memory
+                       C = Configuration memory
+                       B = Boot memory
+                       A = Auxiliary memory
+                      If no region is entered, the entire
+                     device will be programmed.
+N                    VDD Nominal(Applicable only for PM3)                      Device Specific
+OA<Type><Value>      ICD4 Setting                                              None
+                     Types:
+                       A = PGC resistor value in Kohms
+                       B = PGC resistor value in Kohms
+                       C =PGC Config 0-None, 1-Pull up, 2-Pull down
+                       D =PGD Config 0-None, 1-Pull up, 2-Pull down
+                       S =Programming Speed 0-Minimum, 1-Medium, 2-Maximum
+                       L =LED Brightness 1-10
+OB                   Batch Mode Operation                                      None
+OD                   VDD First(Applicable only for PICKIT3, ICD3 and ICD4)           VPP First
+OE                   Description file for saving environment                   None
+OL                   Release from Reset(Not Applicable for PM3)                Hold in reset
+OM                   Miscellaneous file for saving environment                 None
+OP<range>            Preserve Program memory                                   Do Not Preserve
+                     E.g - OP0-1FF
+OG<imagename>        PICKIT3 Programmer-to-go(Applicable only for PICKIT3)     None
+OH                   Erase All Before Programming (Not Selected)               Selected
+OC<memory region>    Select memory regions(Applicable with Programmer-to-go)   All regions selected
+                     memory regions:
+                       P = Program memory
+                       E = EEPROM
+                       I = ID memory
+                       C = Configuration memory
+ON####,####          Program memory range                                      None
+                     #### is a hexdecimal number representing Start
+                     and End Address in sequence
+OI                   Display Device ID Revision(Applicable only for PM3)       Do Not Display
+OJ                    JTAG interface used for Program, Read, Erase, Verify, and Blank check operations.    Do Not Overwrite
+OT                    Switches the memory from single partition to dual partition mode.    Do Not Overwrite
+OU                    Overwrite Calibration memory                                 Do Not Overwrite
+P<part>              Part Selection. Example: 16f877                           None
+Q                    Quiet Mode, no screen output(Applicable only for PM3)     Quiet mode off
+R<on> <off>          Safe/Restricted Mode(Applicable only for PM3)             None
+S<file>              SQTP File Selection                                       None
+T                    P = Tool Selection.
+                      E.g -TPRICE for RealICE -TPPK3 for PICKIT3
+                     S = Specific Tool Selection using Serial No.
+                      E.g -TSBUR1234566
+                     Short Name for Tools
+                     REALICE - RICE
+                     ICD3    - ICD3
+                     PICKIT3 - PK3
+                     PM3     - PM3
+                     ICD4     - ICD4
+V                    VPP(Applicable only for PM3)                              Device Specific
+W                    Power target from tool                                  Externally power target
+X                    VDD Max(Applicable only for PM3)                          Device Specific
+Y<memory region>     Verify Device                                             Do Not Verify
+                     P = Program memory
+                     E = EEPROM
+                     I = ID memory
+                     C = Configuration memory
+                     B = Boot memory
+                     A = Auxiliary memory
+                     If no region is entered, the entire
+                     device will be verified.
+Z                    Preserve EEData on Program                                Do Not Preserve
+?                    Help Screen                                               Not Shown
+
+
+Each option must be immediately preceeded by a switch, Which can
+be either a dash <-> or a slash </> and options must be separated
+by a single space.
+
+
+Commands and their parameters are not case sensitive. Commands will
+be processed according to command order of precedence, not the order
+in which they appear on the command line.
+
+The program will return an exit code upon completion which will
+indicate either successful completion, or describe the reason for 
+failure.
+
+
+Version v3.65
+
+Copyright (C) Microchip Technology Inc. 2013

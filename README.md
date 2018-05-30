@@ -46,3 +46,5 @@ Baud rate calculator [URL](http://www.nicksoft.info/el/calc/?ac=spbrg&submitted=
 
 CanBUS calculator [URL](https://www.medo64.com/2014/05/canbus-setup/)
 
+J2534 Device via arduino enviroment with win32 dll sources too
+[SardineCan](https://github.com/hackingvolvo)

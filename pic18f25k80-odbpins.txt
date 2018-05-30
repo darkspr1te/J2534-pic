@@ -1,0 +1,65 @@
+MCLR (pin 1) MCLR/V PP /RE3
+Vmeasure (pin 2) RA0
+J1850 Volts (pin 3)RA1
+J1850 Bus+ (pin 4)RA2
+Memory (pin 5)RA3
+Baud Rate (pin 6)RA4
+LFmode (pin 7)RA5
+VSS (pins 8 and 19)V SS
+XT1 (pin 9) and RA7
+XT2 (pin 10)RA6
+VPW In (pin 11)RC0
+ISO In (pin 12)RC1
+PWM In (pin 13)RC2
+J1850 Bus- (pin 14)RC3
+
+RTS (pin 15)RC4
+Busy (pin 16)RC5
+RS232UartTx (pin 17)RC6
+RS232UartRx (pin 18)RC7
+VSS (pin 19)V SS
+VDD (pin 20)V DD
+ISO K (pin 21)  RB0
+ISO L (pin 22)RB1
+CAN Tx (pin 23) RB2
+CAN Rx (pin 24)RB3
+RS232 Rx LED (pin 25), RB4
+RS232 Tx LED (pin 26),RB5
+OBD Rx LED (pin 27) RB6/PGC
+OBD Tx LED (pin 28)RB7/PGD
+
+
+
+PORTB, BIT4 (LED-RS232-CMD OFF)
+PORTB, BIT5 (LED-WORK OFF)
+PORTB, BIT7 (LED-CAN-TX OFF)
+PORTB, BIT6 (LED-CAN-RX OFF)
+
+
+
+
+
+
+
+
+
+
+fuse(s)
+5D DF 7F 7F 00 89 91 00
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+

@@ -1,7 +1,7 @@
 ### J2534-pic project 
 
-This project is using a clone elm327 device with a pic18f25k80 MCU, in it's default config you can't get CAN 500 to function from 4MHZ xtal (AFAIK)
-So I've replaced the 4MHZ defualt X-Tal with a 8MHZ from the scraps bin, quick hack i know and wont fix all the other devices out there, pity but lets get 
+This project is using a clone elm327 device with a pic18f25k80 MCU, in it's default config you can't get CAN 500 to function from 4MHZ X-TAL (AFAIK)
+So I've replaced the 4MHZ defualt X-TAL with a 8MHZ from the scraps bin, quick hack i know and wont fix all the other devices out there, pity but lets get 
 codebase working, i have the orig 4mhz so i can try getting 500Kbps working another time.
 
 
@@ -15,7 +15,7 @@ CPU:PIC18F25K80
 CAN IC:MCP2551
 K-Line : Transistor
 ```
-### Warning: Using this software on your device will erase OEM bootloader+firmware and your will no longer be able to use it in it's original application
+### Warning: Using this software on your device will erase OEM bootloader+firmware and you will no longer be able to use it in it's original application
 
 ### Still TODO:
 
@@ -43,5 +43,6 @@ PLL = X-TAL * 4
 
 ### Some handy resources
 Baud rate calculator [URL](http://www.nicksoft.info/el/calc/?ac=spbrg&submitted=1&mcu=+Generic+16bit+BRG&Fosc=32&FoscMul=1000000&FoscAutoSelector=0&MaxBaudRateError=1)
+
 CanBUS calculator [URL](https://www.medo64.com/2014/05/canbus-setup/)
 

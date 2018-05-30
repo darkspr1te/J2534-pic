@@ -201,17 +201,19 @@ void UART1Init(long baud_rate){
 
 void print_pic_settings(void)
 {
-    puts1USART("\n\r\n");
-onetwo=BRGCON1;
-itoa (buffer,onetwo,16);
-puts1USART(buffer);
-puts1USART("\n\r");
-itoa (buffer,BRGCON2,16);
-puts1USART(buffer);
-puts1USART("\n\r");
-itoa (buffer,BRGCON3,16);
-puts1USART(buffer);
-puts1USART("\n\r");
+    //unsigned int CURR_VAL=0;
+    char buff [33];
+    puts1USART("\n\r\nBRGCON1 is 0x");
+    //CURR_VAL=BRGCON1;
+    itoa (buff,BRGCON1,16);
+    puts1USART(buff);
+    puts1USART("\n\rBRGCON2 is 0x");
+    itoa (buff,BRGCON2,16);
+    puts1USART(buff);
+    puts1USART("\n\rBRGCON3 is 0x");
+    itoa (buff,BRGCON3,16);
+    puts1USART(buff);
+    puts1USART("\n\r");
 }
 
 void main(void) {
@@ -231,7 +233,8 @@ UART1Init(115200);
 itoa(buffer,set_can_speed(CAN_SPEED_500),10);
 puts1USART("speed is index ");
 puts1USART(buffer);
-puts1USART("\n\rbe ready to rec");
+print_pic_settings();
+puts1USART("\n\rPress Any Key");
 //__delay_ms(10000);
 //__delay_ms(10000);
 while (key_button ==0)key_button= Read1USART();

@@ -72,9 +72,9 @@ void low_priority  interrupt  low_isr(void){
     PIR3=0;
     printf("pir4 %d\n\r",PIR4);
     PIR4=0;*/
-    printf("\n\rCAN %d",CANSTAT);
-    printf("\n\rCAN %d",CANCON);
-    printf("\n\rPIR5 %d\n\r",PIR5);
+   // printf("\n\rCAN %d",CANSTAT);
+    //printf("\n\rCAN %d",CANCON);
+    //printf("\n\rPIR5 %d\n\r",PIR5);
    // PIR5=0;
    // INTCONbits.T0IF=0;
     checkCanMessageReceived();

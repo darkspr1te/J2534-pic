@@ -218,21 +218,29 @@ void print_pic_settings(void)
 void checkCanMessageReceived(void) {
     CanMsg local_msg;
     PORTBbits.RB6 ^= 1;//led2
-    printf("part1");
-    printf("\n\rRXB0IF %d", PIR5bits.RXB0IF);
-    printf("\n\rRXB0IE %d", PIE5bits.RXB0IE);
+    //printf("\n\n\r\r\n\r");
+    //printf("\n\rCOSTAT %4x\n\r",COMSTAT);
+   // printf("\n\rRXB0IF %d", PIR5bits.RXB0IF);
+   // printf("\n\rRXB0IE %d", PIE5bits.RXB0IE);
     // check if CAN receive buffer 0 interrupt is enabled and interrupt flag set
     if (PIE5bits.RXB0IE && PIR5bits.RXB0IF) {
-        printf("part2");
+      
         // now confirm the buffer 0 is full and take directly 2 bytes of data from there - should be always present
         if (RXB0CONbits.RXFUL) {
             
             // we can only receive normal and complex messages, so we need to know the canID
           //  CanHeader header = can_idToHeader(&RXB0SIDH, &RXB0SIDL);
-            local_msg.ID =RXB0SIDH<< 3;
-            local_msg.ID = local_msg.ID | RXB0SIDL;
-            if (local_msg.ID == 0x7f8)printf("\n\rcan match\n\r");
-            printf("\n\rcan id %4x",local_msg.ID);
+         //   local_msg.ID =RXB0SIDH<< 3;
+            printf("\n\rHigh %4.4x\n\r",RXB0SIDH);
+             printf("low %4.4x\n\r",RXB0SIDL);
+            // PIR5 &= 0b1111100;
+         //   local_msg.ID = (local_msg.ID | RXB0SIDL);
+            local_msg.ID = (RXB0SIDH << 3);
+            local_msg.ID = local_msg.ID | (RXB0SIDL>>5);
+            if (local_msg.ID == 0xffff){}
+            else{
+           // printf("\n\rcan match\n\r");
+           
             local_msg.DLC = RXB0DLC;
             local_msg.Data[0] =RXB0D0 ;
             local_msg.Data[1] =RXB0D1 ;
@@ -242,15 +250,12 @@ void checkCanMessageReceived(void) {
             local_msg.Data[5] =RXB0D5 ;
             local_msg.Data[6] =RXB0D6 ;
             local_msg.Data[7] =RXB0D7 ;
-            printf("\n\rcan DLC %4x",local_msg.DLC);
-            printf("\n\rcan d0 %4x",local_msg.Data[0]);
-            printf("\n\rcan d1 %4x",local_msg.Data[1]);
-            printf("\n\rcan d2 %4x",local_msg.Data[2]);
-            printf("\n\rcan d3 %4x",local_msg.Data[3]);
-            printf("\n\rcan d4 %4x",local_msg.Data[4]);
-            printf("\n\rcan d5 %4x",local_msg.Data[5]);
-            printf("\n\rcan d6 %4x",local_msg.Data[6]);
-            printf("\n\rcan d7 %4x",local_msg.Data[7]);
+             printf("[%2.2x]",local_msg.ID);
+            printf("[%2.2x]",local_msg.DLC);
+            for (int count =0;count <local_msg.DLC;count++)printf("%2.2x:",local_msg.Data[count]);
+            
+        
+         }
             // also ignore highest bit of node ID = floor
           //  receivedNodeID = header.nodeID & MAX_7_BITS;
             // also take the 1st byte of data
@@ -321,7 +326,7 @@ OBDTX_LED =1;
 RSTX_LED = 1;
 //fake can message for testing
         
-Message_Can.ID=0x7df;
+Message_Can.ID=0x7ff;
 Message_Can.DLC=7;
 for (int b=0;b<=7;b++){Message_Can.Data[b]=(b<<2);}
 Message_Can.Data[1]=2;
@@ -383,9 +388,9 @@ key_button=0;
        printf("\n\rPress Any Key\n\r");
        char newbuf[10];
        gets1USART (&newbuf, 1);
-       printf("key %c",newbuf);
+      // printf("key %c",newbuf);
        if (newbuf[0]=='l'){printf("can sent");can_Transmit(Message_Can);}
-     for (int c = 0;c <= 200;c++)__delay_ms(10);
+     //for (int c = 0;c <= 200;c++)__delay_ms(10);
      //TXREG = 65;
     }
 

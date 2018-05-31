@@ -63,3 +63,7 @@
 
 // CONFIG7H
 #pragma config EBTRB = OFF      // Table Read Protect Boot (Disabled)
+
+#define _XTAL_FREQ 8000000
+  
+#define _XTAL_PLL (_XTAL_FREQ * 4)

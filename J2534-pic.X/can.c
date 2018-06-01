@@ -431,6 +431,7 @@ void can_Transmit(CanMsg Message)
             CANCONbits.ABAT = 1;
         }
     }*/
+    //PIE5 &= 0b11111100;
     //0x35E    0110 1011 110
     //TXB0SIDH = 0x6B;
     TXB0SIDH = Message.ID >>3;
@@ -490,14 +491,14 @@ void CanInit(void)
     // Mask 0 (M0) will accept NO extended addresses, but any standard address
     RXM0EIDH = 0x00;    // Extended Address receive acceptance mask, high byte 
     RXM0EIDL = 0x00;    // Extended Address receive acceptance mask, low byte
-    RXM0SIDH = 0xFF;    // Standard Address receive acceptance mask, high byte
-    RXM0SIDL = 0xE0;    // Standard Address receive acceptance mask, low byte
+    RXM0SIDH = 0x00;    // Standard Address receive acceptance mask, high byte
+    RXM0SIDL = 0x00;    // Standard Address receive acceptance mask, low byte
     
     // Mask 1 (M1) will accept NO extended addresses, but any standard address
     RXM1EIDH = 0x00;    // Extended Address receive acceptance mask, high byte    
     RXM1EIDL = 0x00;    // Extended Address receive acceptance mask, low byte
-    RXM1SIDH = 0xFF;    // Standard Address receive acceptance mask, high byte
-    RXM1SIDL = 0xE0;    // Standard Address receive acceptance mask, low byte
+    RXM1SIDH = 0x00;    // Standard Address receive acceptance mask, high byte
+    RXM1SIDL = 0x00;    // Standard Address receive acceptance mask, low byte
     
     // Mode 0 allows use of receiver filters RXF0 through RXF5. Enable filters
     // RXF0 and RXF1, all others disabled. See register RXFCONn.
@@ -511,13 +512,13 @@ void CanInit(void)
    
     RXF0EIDH = 0x00;    //Extended Address Filter-0 unused, set high byte to 0
     RXF0EIDL = 0x00;    //Extended Address Filter-0 unused, set low byte to 0
-    RXF0SIDH = 0x32;    //Standard Address Filter-0 high byte set to 0x32
-    RXF0SIDL = 0xC0;    //Standard Address Filter-0 low byte set to 0xC0
+    RXF0SIDH = 0xff;    //Standard Address Filter-0 high byte set to 0x32
+    RXF0SIDL = 0xe0;    //Standard Address Filter-0 low byte set to 0xC0 / 0xe0
 
     RXF2EIDH = 0x00;    //Extended Address Filter-0 unused, set high byte to 0
     RXF2EIDL = 0x00;    //Extended Address Filter-0 unused, set low byte to 0
-    RXF2SIDH = 0x33;    //Standard Address Filter-0 high byte set to 0x33
-    RXF2SIDL = 0xC0;    //Standard Address Filter-0 low byte set to 0xC0
+    RXF2SIDH = 0xff;    //Standard Address Filter-0 high byte set to 0x33
+    RXF2SIDL = 0xe0;    //Standard Address Filter-0 low byte set to 0xC0
     
     
     
@@ -528,11 +529,11 @@ void CanInit(void)
     // Set Receiving Modes for receiver buffers 0 and 1
    
     RXB0CON = 0x00;     // See register RXB0CON
-      RXB0CONbits.RXM0=0b11;
-     RXB0CONbits.RXM1=0b1;
+      RXB0CONbits.RXM0=0b01;
+     RXB0CONbits.RXM1=0b0;
     RXB1CON = 0x00;     // See register RXB1CON    
-     RXB1CONbits.RXM0=0b11;
-     RXB1CONbits.RXM1=0b1;
+    // RXB1CONbits.RXM0=0b11;
+   //  RXB1CONbits.RXM1=0b1;
     return;
 }
 

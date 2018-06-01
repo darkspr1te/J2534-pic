@@ -100,8 +100,8 @@ void config_me(void){
     TRISA = 0b00001111;
    // TRISE = 0b00000000;
     TRISB = 0;
-    TRISCbits.TRISC6 = 1; // set in datasheet
-    TRISCbits.TRISC7 = 1; // set in datasheet
+   // TRISCbits.TRISC6 = 1; // set in datasheet
+ //   TRISCbits.TRISC7 = 1; // set in datasheet
     
     
     SPBRG1=34;  // 4 MHz oscilator with PLL x4 = 16MHZ
@@ -253,7 +253,7 @@ void checkCanMessageReceived(void) {
              printf("[%2.2x]",local_msg.ID);
             printf("[%2.2x]",local_msg.DLC);
             for (int count =0;count <local_msg.DLC;count++)printf("%2.2x:",local_msg.Data[count]);
-            
+            printf("\n\r");
         
          }
             // also ignore highest bit of node ID = floor
@@ -303,7 +303,8 @@ unsigned int onetwo=0;
 char key_button =0;
 char error=0;
 Can_Buffer messages_in_a_can;
-
+OBDRX_LED=1;
+OBDTX_LED=1;
 
 config_me();//config cpu in general
 __delay_ms(10);//delay too reduce random chars to the FTDI UART
@@ -315,7 +316,7 @@ startUp_device();
 UART1Init(115200);//setup and init uart1 
 OBDRX_LED=1;
 OBDTX_LED=1;
-error=set_can_speed(CAN_SPEED_125);//set can speed
+error=set_can_speed(CAN_SPEED_500);//set can speed
 
 
 printf("\n\rPress Any Key\n\r");

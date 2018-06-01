@@ -57,33 +57,12 @@ void interrupt high_priority high_isr(void){
 
 
 void low_priority  interrupt  low_isr(void){
-	//LATBbits.LATB3 ^= 1;       //Toggle portB pin 3 (red LED)
-	//segUpDate
-   // PORTBbits.RB6 ^= 1;
+	
   
     PORTBbits.RB5 ^= 1;//led4
-    //TXREG = 'Q';
-  //  printf("\n\rpir1 %d\n\r",PIR1);
-	//PIR1 &= 0b1011011;///clear the interrupt flag (TM0)so that another interrupt can happen
-  /*  PIR1 =0;
-    printf("pir2 %d\n\r",PIR2);
-    PIR2=0;
-    printf("pir3 %d\n\r",PIR3);
-    PIR3=0;
-    printf("pir4 %d\n\r",PIR4);
-    PIR4=0;*/
-   // printf("\n\rCAN %d",CANSTAT);
-    //printf("\n\rCAN %d",CANCON);
-    //printf("\n\rPIR5 %d\n\r",PIR5);
-   // PIR5=0;
-   // INTCONbits.T0IF=0;
+
     checkCanMessageReceived();
-    //if (PIR5==3)PIR5=0;
-    //reg = PIR1;
-   // printf("pir1 %d\n\r",reg);   
-   // PIR5 &= 0b1111100;///clear the interrupt flag (TM0)so that another interrupt can happen
-    
-   // printf("pir 5 %d\n\r",PIR5);
+  
 }
 
 
